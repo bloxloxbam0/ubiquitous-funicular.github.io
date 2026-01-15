@@ -1,192 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="styles.css" />
 <meta charset="UTF-8">
 <title>Game Hub – 100 Games</title>
+
 <style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-        color: white;
-        text-align: center;
-    }
+#fullscreenGame {
+    position: absolute;
+    top: 10px;
+    right: 55px;
+    background: #333;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 6px;
+}
 
-    h1 {
-        margin: 25px 0 5px;
-    }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+    text-align: center;
+}
 
-    .games {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 20px;
-        padding: 25px;
-        max-width: 1400px;
-        margin: auto;
-    }
+.games {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    padding: 25px;
+    max-width: 1400px;
+    margin: auto;
+}
 
-    /* BUTTON CARDS */
-    .game-card {
-        background: #1b2a3a;
-        border-radius: 14px;
-        overflow: hidden;
-        cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
+.game-card {
+    background: #1b2a3a;
+    border-radius: 14px;
+    border: none;
+    padding: 0;
+    color: white;
+    text-align: left;
+    cursor: pointer;
+}
 
-        /* remove button defaults */
-        border: none;
-        padding: 0;
-        color: white;
-        text-align: left;
-    }
+.game-card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+}
 
-    .game-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-    }
+.game-info {
+    padding: 10px;
+}
 
-    .game-card:focus {
-        outline: none;
-    }
+#searchBar {
+    width: 280px;
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    margin: 10px auto;
+    display: block;
+}
 
-    .game-card img {
-        width: 100%;
-        height: 120px;
-        object-fit: cover;
-        display: block;
-    }
-
-    .game-info {
-        padding: 10px;
-    }
-
-    .game-info h3 {
-        margin: 6px 0;
-        font-size: 15px;
-    }
-
-    .game-info p {
-        font-size: 12px;
-        opacity: 0.8;
-    }
-
-    footer {
-        margin: 20px;
-        font-size: 12px;
-        opacity: 0.7;
-    }
-
-    #searchBar {
-        width: 280px;
-        max-width: 80%;
-        padding: 12px 16px;
-        border-radius: 25px;
-        border: none;
-        outline: none;
-        font-size: 14px;
-        margin: 15px auto 25px;
-        display: block;
-    }
-
-    #searchBar:focus {
-        box-shadow: 0 0 15px rgba(0,255,255,0.6);
-    }
-    #favoritesToggle {
+#favoritesToggle {
+    display: block;
+    margin: 5px auto 15px;
     background: #ffd700;
     border: none;
     border-radius: 20px;
     padding: 8px 14px;
-    font-size: 13px;
     cursor: pointer;
-    margin-bottom: 15px;
 }
 
 #favoritesToggle.active {
     background: #ff9800;
 }
-#favoritesToggle {
-    display: block;
-    margin: -10px auto 15px;
+
+/* MODAL */
+#gameModal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    z-index: 9999;
 }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+#gameFrame {
+    width: 90%;
+    height: 85%;
+    border: none;
+    margin-top: 50px;
+    border-radius: 12px;
+}
+
+#closeGame {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: red;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
 </style>
 </head>
 
 <body>
+
 <h1>🎮 Game Hub</h1>
 <p>100 HTML Games</p>
 
-<input  type="text"  id="searchBar"  placeholder="🔍 Search games...">
+<input id="searchBar" placeholder="🔍 Search games...">
 <button id="favoritesToggle">⭐ Show Favorites</button>
 
 <div class="games" id="games"></div>
 
-<h3>Hi</h3>
-<p>Im a dude</p>
-
 <footer>© 2026 bloxloxbam</footer>
+
+<!-- MODAL -->
+<div id="gameModal">
+    <button id="closeGame">✖</button>
+    <button id="fullscreenGame">⛶</button>
+    <iframe id="gameFrame"></iframe>
+</div>
+
+
 <script>
 const games = [];
 
 // Generate games
 for (let i = 1; i <= 100; i++) {
     games.push({
-        title: "Game " + i,
-        description: "Play game number " + i,
+        title: "Coming soon " + i,
+        description: "soon" + i,
         page: "games/game" + i + ".html",
         image: "https://via.placeholder.com/400x200?text=Game+" + i
     });
 }
 
-// Customize Game 1
-games[0].title = "My First Game";
-games[0].description = "This is awesome";
-games[0].image = "images/mygame.png";
+// CUSTOM GAMES
+games[0] = {
+    title: "Ruffle",
+    description: "A website that runs ROM files",
+    image: "https://uploads.onecompiler.io/447ehvbeh/44ahqxcum/IMG_2283.jpeg",
+    page: "games/ruffle.html"
+};
 
-games[1].title = "Chat Channel"
-games[1].description = "A place where you can chat (NO MOD USE AT OWN RISK)"
-games[1].image = ""
+games[1] = {
+    title: "Bridge Race",
+    description: "A fun multiplayer bridge buliding game",
+    image: "https://uploads.onecompiler.io/447ehvbeh/44amgd7np/Screenshot%202026-01-14%20190542.png",
+    page: "games/BridgeRace.html"
+};
+
+games[2] = {
+    title: "infinite Craft",
+    description: "A fun game where you can craft anything and with anything",
+    image: "images/infCraft.png",
+    page: "games/infCraft.html"
+};
+
+games[3] = {
+    title: "Bridge Race",
+    description: "A fun multiplayer bridge buliding game",
+    image: "https://uploads.onecompiler.io/447ehvbeh/44amgd7np/Screenshot%202026-01-14%20190542.png",
+    page: "games/BridgeRace.html"
+};
+games[4] = {
+    title: "BitLife.io",
+    description: "A fun game where you can live a virtual life",
+    image: "images/BitLife_logo.webp",
+    page: "games/BitLife.html"
+};
+
+
 
 const gamesContainer = document.getElementById("games");
 const searchBar = document.getElementById("searchBar");
+const favoritesToggle = document.getElementById("favoritesToggle");
 
 let currentList = games;
+let showingFavorites = false;
 
-/* ===== FAVORITES ===== */
+/* FAVORITES */
 function getFavorites() {
     return JSON.parse(localStorage.getItem("favorites")) || [];
 }
 
-function saveFavorites(favs) {
-    localStorage.setItem("favorites", JSON.stringify(favs));
-}
-
 function toggleFavorite(title) {
     let favs = getFavorites();
-
-    if (favs.includes(title)) {
-        favs = favs.filter(t => t !== title);
-    } else {
-        favs.push(title);
-    }
-
-    saveFavorites(favs);
+    favs = favs.includes(title) ? favs.filter(t => t !== title) : [...favs, title];
+    localStorage.setItem("favorites", JSON.stringify(favs));
     renderGames(currentList);
 }
 
-/* ===== RENDER ===== */
+/* RENDER */
 function renderGames(list) {
     currentList = list;
     const favorites = getFavorites();
@@ -195,83 +207,94 @@ function renderGames(list) {
     list.forEach(game => {
         const card = document.createElement("button");
         card.className = "game-card";
-        card.type = "button";
 
         card.onclick = (e) => {
             if (e.target.classList.contains("fav-btn")) return;
-            window.location.href = game.page;
+            openGame(game.page);
         };
-
-        const isFav = favorites.includes(game.title);
 
         card.innerHTML = `
             <img src="${game.image}">
             <div class="game-info">
-                <h3>
-                    ${game.title}
-                    <span class="fav-btn" data-title="${game.title}">
-                        ${isFav ? "⭐" : "☆"}
-                    </span>
+                <h3>${game.title}
+                    <span class="fav-btn">${favorites.includes(game.title) ? "⭐" : "☆"}</span>
                 </h3>
                 <p>${game.description}</p>
             </div>
         `;
 
-        gamesContainer.appendChild(card);
-    });
-
-    document.querySelectorAll(".fav-btn").forEach(btn => {
-        btn.onclick = (e) => {
+        card.querySelector(".fav-btn").onclick = (e) => {
             e.stopPropagation();
-            toggleFavorite(btn.dataset.title);
+            toggleFavorite(game.title);
         };
+
+        gamesContainer.appendChild(card);
     });
 }
 
-/* ===== SEARCH ===== */
-searchBar.addEventListener("input", () => {
-    const query = searchBar.value.toLowerCase();
+/* SEARCH */
+searchBar.oninput = () => {
+    const q = searchBar.value.toLowerCase();
+    renderGames(games.filter(g =>
+        g.title.toLowerCase().includes(q) ||
+        g.description.toLowerCase().includes(q)
+    ));
+};
 
-    const filtered = games.filter(game =>
-        game.title.toLowerCase().includes(query) ||
-        game.description.toLowerCase().includes(query)
+/* FAVORITES TOGGLE */
+favoritesToggle.onclick = () => {
+    showingFavorites = !showingFavorites;
+    favoritesToggle.textContent = showingFavorites ? "⭐ Showing Favorites" : "⭐ Show Favorites";
+    favoritesToggle.classList.toggle("active");
+    renderGames(showingFavorites
+        ? games.filter(g => getFavorites().includes(g.title))
+        : games
     );
+};
 
-    renderGames(filtered);
-});
+/* IFRAME */
+const modal = document.getElementById("gameModal");
+const frame = document.getElementById("gameFrame");
+const closeBtn = document.getElementById("closeGame");
 
-// Initial load
+function openGame(page) {
+    frame.src = page;
+    modal.style.display = "block";
+}
+
+closeBtn.onclick = () => {
+    frame.src = "";
+    modal.style.display = "none";
+};
+
+// INIT
 renderGames(games);
 
 
 
-const favoritesToggle = document.getElementById("favoritesToggle");
-let showingFavorites = false;
 
-favoritesToggle.onclick = () => {
-    showingFavorites = !showingFavorites;
 
-    if (showingFavorites) {
-        const favs = getFavorites();
-        const favGames = games.filter(game => favs.includes(game.title));
-        favoritesToggle.textContent = "⭐ Showing Favorites";
-        favoritesToggle.classList.add("active");
-        renderGames(favGames);
+
+
+const fullscreenBtn = document.getElementById("fullscreenGame");
+
+fullscreenBtn.onclick = () => {
+    if (!document.fullscreenElement) {
+        frame.requestFullscreen();
     } else {
-        favoritesToggle.textContent = "⭐ Show Favorites";
-        favoritesToggle.classList.remove("active");
-        renderGames(games);
+        document.exitFullscreen();
     }
 };
 
+closeBtn.onclick = () => {
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+    }
+    frame.src = "";
+    modal.style.display = "none";
+};
+
 </script>
-
-
-
-
-
-
-
 
 </body>
 </html>

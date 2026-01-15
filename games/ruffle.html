@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ruffle Demo | Frame</title>
+  <style>
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; }
+    body {
+      margin: 0;
+      background: #0f172a;
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .frame-container {
+      width: 100%;
+      max-width: 1200px;
+      height: 675px;
+      background: #020617;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      position: relative;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .fullscreen-btn {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.7);
+      border: none;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .fullscreen-btn:hover {
+      background: rgba(0,0,0,0.85);
+    }
+  </style>
+</head>
+<body>
+  <div class="frame-container" id="frame">
+    <iframe
+      src="https://ruffle.rs/demo/"
+      allowfullscreen
+      referrerpolicy="no-referrer"
+    ></iframe>
+    <button class="fullscreen-btn" onclick="toggleFullscreen()">Fullscreen</button>
+  </div>
+
+  <script>
+    function toggleFullscreen() {
+      const frame = document.getElementById('frame');
+      if (frame.requestFullscreen) frame.requestFullscreen();
+      else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
+      else if (frame.msRequestFullscreen) frame.msRequestFullscreen();
+    }
+  </script>
+</body>
+</html>
