@@ -5,84 +5,139 @@
 <title>math </title>
 
 <style>
-#fullscreenGame {
-    position: absolute;
-    top: 10px;
-    right: 55px;
-    background: #333;
-    color: white;
-    border: none;
-    padding: 6px 10px;
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 6px;
-}
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Share+Tech+Mono&display=swap');
 
+:root {
+    --neon-cyan: #00f7ff;
+    --neon-purple: #7a5cff;
+    --neon-pink: #ff2fd3;
+    --dark-bg: #05080f;
+    --card-bg: rgba(10, 20, 35, 0.85);
+    --green: #00ff00;
+}
+ 
+/* GLOBAL */
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    color: white;
+    font-family: 'Share Tech Mono', monospace;
+    background:
+        radial-gradient(circle at top, #0b1d2a, #02040a 70%),
+        repeating-linear-gradient(
+            to bottom,
+            rgba(0,255,255,0.02) 0px,
+            rgba(0,255,255,0.02) 1px,
+            transparent 2px,
+            transparent 4px
+        );
+    color: var(--neon-cyan);
     text-align: center;
 }
 
+/* HEADERS */
+h1 {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 2px;
+    text-shadow:
+        0 0 6px var(--neon-cyan),
+        0 0 14px var(--neon-cyan);
+}
+
+p {
+    opacity: 0.85;
+}
+
+/* SEARCH */
+#searchBar {
+    width: 280px;
+    padding: 12px;
+    border-radius: 30px;
+    border: 1px solid var(--green);
+    background: transparent;
+    color: var(--green);
+    box-shadow: 0 0 12px rgba(0,255,0,0.7);
+    outline: none;
+}
+
+/* FAVORITES */
+#favoritesToggle {
+    margin: 10px auto 20px;
+    background: transparent;
+    border: 1px solid var(--neon-pink);
+    border-radius: 30px;
+    padding: 8px 16px;
+    color: var(--neon-pink);
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(255,47,211,0.5);
+}
+
+#favoritesToggle.active {
+    background: rgba(255,47,211,0.15);
+}
+
+/* GRID */
 .games {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px;
-    padding: 25px;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 22px;
+    padding: 30px;
     max-width: 1400px;
     margin: auto;
 }
 
+/* GAME CARDS */
 .game-card {
-    background: #1b2a3a;
-    border-radius: 14px;
-    border: none;
+    background: var(--card-bg);
+    border-radius: 16px;
+    border: 1px solid rgba(0,247,255,0.25);
     padding: 0;
     color: white;
-    text-align: left;
     cursor: pointer;
+    transition: transform 0.25s, box-shadow 0.25s;
+    box-shadow:
+        0 0 10px rgba(0,247,255,0.25),
+        inset 0 0 12px rgba(0,247,255,0.05);
 }
 
+.game-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow:
+        0 0 18px rgba(0,247,255,0.7),
+        0 0 40px rgba(122,92,255,0.4);
+}
+
+/* IMAGE */
 .game-card img {
     width: 100%;
     height: 120px;
     object-fit: cover;
+    filter: contrast(1.1) saturate(1.2);
 }
 
+/* INFO */
 .game-info {
-    padding: 10px;
-}
-
-#searchBar {
-    width: 280px;
     padding: 12px;
-    border-radius: 25px;
-    border: none;
-    margin: 10px auto;
-    display: block;
 }
 
-#favoritesToggle {
-    display: block;
-    margin: 5px auto 15px;
-    background: #ffd700;
-    border: none;
-    border-radius: 20px;
-    padding: 8px 14px;
+.game-info h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fav-btn {
     cursor: pointer;
-}
-
-#favoritesToggle.active {
-    background: #ff9800;
+    color: var(--neon-pink);
+    text-shadow: 0 0 6px var(--neon-pink);
 }
 
 /* MODAL */
 #gameModal {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.85);
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(6px);
     display: none;
     z-index: 9999;
 }
@@ -90,26 +145,104 @@ body {
 #gameFrame {
     width: 90%;
     height: 85%;
-    border: none;
+    border: 1px solid var(--neon-cyan);
     margin-top: 50px;
-    border-radius: 12px;
+    border-radius: 14px;
+    box-shadow: 0 0 30px rgba(0,247,255,0.6);
+}
+
+/* MODAL BUTTONS */
+#closeGame,
+#fullscreenGame {
+    background: transparent;
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    padding: 6px 12px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,247,255,0.5);
 }
 
 #closeGame {
     position: absolute;
     top: 10px;
     right: 15px;
-    background: red;
-    color: white;
-    border: none;
-    padding: 6px 10px;
-    font-size: 18px;
-    cursor: pointer;
 }
+
+#fullscreenGame {
+    position: absolute;
+    top: 10px;
+    right: 60px;
+}
+
+/* FOOTER */
+footer {
+    margin: 20px;
+    font-size: 12px;
+    opacity: 0.6;
+}
+/* MATRIX BACKGROUND */
+#matrix {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: black;
+    opacity: 0.35; /* lower = more readable */
+    pointer-events: none;
+}
+/* FORCE MATRIX GREEN TEXT */
+*,
+*::before,
+*::after {
+    color: #00ff00 !important;
+}
+
+/* Headings extra glow */
+h1, h2, h3, h4 {
+    text-shadow:
+        0 0 6px rgba(0,255,0,0.8),
+        0 0 14px rgba(0,255,0,0.6);
+}
+
+/* Paragraphs & small text */
+p, span, footer {
+    text-shadow: 0 0 4px rgba(0,255,0,0.5);
+}
+
+/* Inputs & buttons */
+input, button {
+    color: #00ff00 !important;
+    border-color: #00ff00 !important;
+    box-shadow: 0 0 12px rgba(0,255,0,0.6);
+    background: transparent;
+}
+
+/* Icons & emojis */
+img, svg {
+    filter: drop-shadow(0 0 6px rgba(0,255,0,0.6));
+}
+/* FORCE EVERYTHING MATRIX GREEN */
+* {
+    border-color: #00ff00 !important;
+    box-shadow:
+        0 0 10px rgba(0,255,0,0.6) !important;
+}
+
+/* Disable neon pink/cyan leftovers */
+:root {
+    --neon-cyan: #00ff00;
+    --neon-pink: #00ff00;
+    --neon-purple: #00ff00;
+}
+
 </style>
+
+
 </head>
 
 <body>
+<canvas id="matrix"></canvas>
 
 <h1>Bloxloxbam Hub</h1>
 <p>100 HTML Games</p>
@@ -142,7 +275,8 @@ for (let i = 1; i <= 100; i++) {
         title: "Coming soon " + i,
         description: "soon" + i,
         page: "games/game" + i + ".html",
-        image: "https://via.placeholder.com/400x200?text=Game+" + i
+        image: "https://t4.ftcdn.net/jpg/02/96/69/41/360_F_296694103_sXwljVpU8mpCOpREQCNUbHPI0hY73fcl.jpg"
+
     });
 }
 
@@ -327,6 +461,41 @@ closeBtn.onclick = () => {
     frame.src = "";
     modal.style.display = "none";
 };
+/* MATRIX CODE RAIN */
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+function resizeMatrix() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeMatrix();
+window.addEventListener("resize", resizeMatrix);
+
+const letters = "アカサタナハマヤラワ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const fontSize = 16;
+let columns = Math.floor(canvas.width / fontSize);
+let drops = Array(columns).fill(1);
+
+function drawMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#00ff00";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+        }
+        drops[i]++;
+    }
+}
+
+setInterval(drawMatrix, 33);
 
 </script>
 
