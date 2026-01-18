@@ -269,9 +269,12 @@ img, svg {
 <!--END 404-->
 <script>
 /* SOUND */
-function clickSound() {
-    document.getElementById("clickSound").play();
+function playClick() {
+    const sound = document.getElementById("clickSound");
+    sound.currentTime = 0; // allows rapid clicks
+    sound.play();
 }
+/* GAME DATA */
 const games = [];
 
 // Generate games
