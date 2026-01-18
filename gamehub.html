@@ -395,9 +395,12 @@ function renderGames(list) {
         card.className = "game-card";
 
         card.onclick = (e) => {
-            if (e.target.classList.contains("fav-btn")) return;
-            openGame(game.page);
-        };
+    if (e.target.classList.contains("fav-btn")) return;
+
+    playClick();          // 🔊 click sound
+    openGame(game.page);  // 🎮 open game
+};
+
 
         card.innerHTML = `
             <img src="${game.image}">
@@ -410,9 +413,11 @@ function renderGames(list) {
         `;
 
         card.querySelector(".fav-btn").onclick = (e) => {
-            e.stopPropagation();
-            toggleFavorite(game.title);
-        };
+    e.stopPropagation();
+    playClick(); // 🔊
+    toggleFavorite(game.title);
+};
+
 
         gamesContainer.appendChild(card);
     });
