@@ -248,7 +248,7 @@ img, svg {
 <p>100 HTML Games</p>
 
 <input id="searchBar" placeholder="🔍 Search games...">
-<button id="favoritesToggle">⭐ Show Favorites</button>
+<button id="favoritesToggle" onclick="playClick()">⭐ Show Favorites</button>
 
 <div class="games" id="games"></div>
 
@@ -256,8 +256,8 @@ img, svg {
 
 <!-- MODAL -->
 <div id="gameModal">
-    <button id="closeGame">✖</button>
-    <button id="fullscreenGame">⛶</button>
+    <button id="closeGame" onclick="playClick()">✖</button>
+    <button id="fullscreenGame" onclick="playClick()">⛶</button>
     <iframe id="gameFrame"></iframe>
 </div>
 <!--404-->
@@ -265,8 +265,13 @@ img, svg {
     <h1>😌 Don’t worry</h1>
     <p>If the game doesn’t load, it may be blocked.</p>
 </div>
+<audio id="clickSound" src="audios/computer-mouse-click-352734.mp3" preload="auto"></audio>
 <!--END 404-->
 <script>
+/* SOUND */
+function clickSound() {
+    document.getElementById("clickSound").play();
+}
 const games = [];
 
 // Generate games
