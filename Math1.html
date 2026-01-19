@@ -1,73 +1,399 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Math</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Math club</title>
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-    }
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Share+Tech+Mono&display=swap');
 
-    /* Loading screen */
-    #loading {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      z-index: 10;
-      text-align: center;
-    }
+body{
+  margin:0;
+  font-family:'Share Tech Mono',monospace;
+  background:black;
+  color:#00ff00;
+  text-align:center;
+}
 
-    #loading h1 {
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
+/* MATRIX */
+#matrix{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  opacity:.35;
+}
 
-    #loading p {
-      font-size: 0.95rem;
-      opacity: 0.8;
-    }
+/* TITLE */
+h1{
+  font-family:'Orbitron',sans-serif;
+  margin:20px 0 5px;
+  text-shadow:0 0 12px #00ff00;
+}
 
-    /* iframe */
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: none;
-    }
-  </style>
+p{opacity:.85}
+
+/* CATEGORIES */
+.categories{
+  margin:20px;
+}
+.categories button{
+  background:transparent;
+  border:1px solid #00ff00;
+  color:#00ff00;
+  padding:8px 14px;
+  margin:6px;
+  border-radius:20px;
+  cursor:pointer;
+  box-shadow:0 0 10px #00ff0066;
+}
+.categories button.active{
+  background:#00ff0022;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+  padding:30px;
+  max-width:1400px;
+  margin:auto;
+}
+
+/* CARDS */
+.card{
+  background:rgba(0,20,0,.8);
+  border:1px solid #00ff00;
+  border-radius:14px;
+  padding:16px;
+  cursor:pointer;
+  transition:.25s;
+  box-shadow:0 0 15px #00ff0044;
+}
+.card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 0 30px #00ff00aa;
+}
+
+.card h3{margin:0 0 6px}
+.card p{font-size:.85rem}
+
+/* MODAL */
+#modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.95);
+  display:none;
+  z-index:999;
+}
+
+#frame{
+  width:90%;
+  height:85%;
+  border:1px solid #00ff00;
+  border-radius:14px;
+  margin-top:50px;
+  box-shadow:0 0 30px #00ff00;
+}
+
+#close{
+  position:absolute;
+  top:12px;
+  right:20px;
+  background:none;
+  border:1px solid #00ff00;
+  color:#00ff00;
+  font-size:18px;
+  padding:6px 10px;
+  cursor:pointer;
+}
+.divider{
+  width:80%;
+  height:2px;
+  margin:10px auto 25px;
+  background:linear-gradient(
+    to right,
+    transparent,
+    #00ff00,
+    transparent
+  );
+  box-shadow:0 0 12px #00ff00;
+}
+
+</style>
 </head>
+
 <body>
 
-  <div id="loading">
-    <h1>Loading…</h1>
-    <p>credits to Shadow ( their disc0rd is discord.gg/goshadow )</p>
-  </div>
+<canvas id="matrix"></canvas>
+<div class="divider"></div>
+<h1> Pr0xy Hub</h1>
+<p>Select a category to load proxies</p>
+<div class="categories" id="categories"></div>
+<div class="divider"></div>
+<div class="grid" id="grid"></div>
+<div class="divider"></div>
 
-  <iframe
-    src="https://keenwriting.websdr64.ru/"
-    onload="hideLoading()"
-    allowfullscreen>
-  </iframe>
+<!-- MODAL -->
+<div id="modal">
+  <button id="close">✖</button>
+  <iframe id="frame"></iframe>
+</div>
 
-  <script>
-    function hideLoading() {
-      document.getElementById("loading").style.display = "none";
-      document.querySelector("iframe").style.display = "block";
-    }
-  </script>
+<script>
+/* =========================
+   PROXIES (START AT 1)
+   ========================= */
+
+const proxies = [];
+
+proxies[1] = {
+  title: "Proxy 1",
+  description: "Fast & stable",
+  url: "https://apple8.dnsdyn.net/",
+  category: "Frogie’s Arcade"
+};
+
+proxies[2] = {
+  title: "Proxy 2",
+  description: "Mirror access",
+  url: "https://dash.learnenglishinmerton.org/",
+  category: "Frogie’s Arcade"
+};
+
+proxies[3] = {
+  title: "Proxy 3",
+  description: "Backup node",
+  url: "https://smdpschool.org/",
+  category: "Frogie’s Arcade"
+};
+
+proxies[4] = {
+  title: "Proxy 4",
+  description: "Fast bypass",
+  url: "https://ixl.rocks/",
+  category: "Frogie’s Arcade"
+};
+
+proxies[5] = {
+  title: "Proxy 5",
+  description: "Alt route",
+  url: "https://ixl.works/",
+  category: "Frogie’s Arcade"
+};
+
+proxies[6] = {
+  title: "Proxy 6",
+  description: "School-safe",
+  url: "https://vallejocharterschool.org/",
+  category: "Frogie’s Arcade"
+};
+
+proxies[7] = {
+  title: "Proxy 7",
+  description: "Fallback",
+  url: "https://trinitypreschoolmp.org/",
+  category: "Frogie’s Arcade"
+};
+proxies[8] = {
+  title: "Interstellar 1",
+  description: "Interstellar mirror access",
+  url: "https://playernation.sevecom.com/",
+  category: "Interstellar"
+};
+
+proxies[9] = {
+  title: "Interstellar 2",
+  description: "Interstellar exploration node",
+  url: "https://exploring.sghub.co.za/",
+  category: "Interstellar"
+};
+
+proxies[10] = {
+  title: "Interstellar 3",
+  description: "Fast Interstellar proxy",
+  url: "https://neatwriting.websdr64.ru/",
+  category: "Interstellar"
+};
+
+proxies[11] = {
+  title: "Interstellar 4",
+  description: "Stable Interstellar mirror",
+  url: "https://playernation.websdr64.ru/",
+  category: "Interstellar"
+};
+
+proxies[12] = {
+  title: "Interstellar 5",
+  description: "Learn VCSA Interstellar node",
+  url: "https://learnvcsa.sevecom.com/",
+  category: "Interstellar"
+};
+
+proxies[13] = {
+  title: "Interstellar 6",
+  description: "Experimental Interstellar endpoint",
+  url: "https://fdfhgbv.ticsur.cl/",
+  category: "Interstellar"
+};
+proxies[14] = {
+  title: "Glint 1",
+  description: "Glint main access node",
+  url: "https://experts.websdr64.ru/",
+  category: "Glint"
+};
+
+proxies[15] = {
+  title: "Glint 2",
+  description: "Glint secondary mirror",
+  url: "https://codingexpert.websdr64.ru/",
+  category: "Glint"
+};
+proxies[16] = {
+  title: "Selenite 1",
+  description: "Selenite primary access",
+  url: "https://stylish.websdr64.ru/",
+  category: "Selenite"
+};
+
+proxies[17] = {
+  title: "Selenite 2",
+  description: "Selenite writing skills mirror",
+  url: "https://writingskills.websdr64.ru/",
+  category: "Selenite"
+};
+
+proxies[18] = {
+  title: "Selenite 3",
+  description: "Selenite exploration node",
+  url: "https://explore.clicksoftware.co.uk/",
+  category: "Selenite"
+};
+proxies[19] = {
+  title: "Vapor (Prism) 1",
+  description: "Vapor Prism primary access",
+  url: "https://vaperisveryeducational.dinprima.ro/",
+  category: "Vapor (Prism)"
+};
+
+proxies[20] = {
+  title: "Vapor (Prism) 2",
+  description: "Vapor Prism CSA mirror",
+  url: "https://vapcsa.websdr64.ru/",
+  category: "Vapor (Prism)"
+};
+
+proxies[21] = {
+  title: "Vapor (Prism) 3",
+  description: "BYOD Vapor Prism node",
+  url: "https://byodisthebest.hobbygame.dev/",
+  category: "Vapor (Prism)"
+};
+
+proxies[22] = {
+  title: "Vapor (Prism) 4",
+  description: "ClickSoftware Vapor route",
+  url: "https://click.click.clicksoftware.co.uk/",
+  category: "Vapor (Prism)"
+};
+
+proxies[23] = {
+  title: "Vapor (Prism) 5",
+  description: "Alternate Vapor Prism endpoint",
+  url: "https://dontvape.clicksoftware.co.uk/",
+  category: "Vapor (Prism)"
+};
+
+
+/* =========================
+   CATEGORY SYSTEM
+   ========================= */
+
+const grid = document.getElementById("grid");
+const catBar = document.getElementById("categories");
+const modal = document.getElementById("modal");
+const frame = document.getElementById("frame");
+const closeBtn = document.getElementById("close");
+
+const categories = ["All", ...new Set(proxies.filter(Boolean).map(p => p.category))];
+
+let activeCategory = "All";
+
+function renderCategories(){
+  catBar.innerHTML = "";
+  categories.forEach(cat=>{
+    const btn = document.createElement("button");
+    btn.textContent = cat;
+    btn.className = cat === activeCategory ? "active" : "";
+    btn.onclick = ()=>{
+      activeCategory = cat;
+      renderCategories();
+      renderProxies();
+    };
+    catBar.appendChild(btn);
+  });
+}
+
+function renderProxies(){
+  grid.innerHTML = "";
+  proxies.forEach(p=>{
+    if(!p) return;
+    if(activeCategory !== "All" && p.category !== activeCategory) return;
+
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <h3>${p.title}</h3>
+      <p>${p.description}</p>
+    `;
+    card.onclick = ()=>{
+      frame.src = p.url;
+      modal.style.display = "block";
+    };
+    grid.appendChild(card);
+  });
+}
+
+closeBtn.onclick = ()=>{
+  frame.src = "";
+  modal.style.display = "none";
+};
+
+renderCategories();
+renderProxies();
+
+/* =========================
+   MATRIX RAIN
+   ========================= */
+
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+function resize(){
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+}
+resize();
+addEventListener("resize", resize);
+
+const chars="01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const size=16;
+let cols=Math.floor(canvas.width/size);
+let drops=Array(cols).fill(1);
+
+setInterval(()=>{
+  ctx.fillStyle="rgba(0,0,0,.05)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="#00ff00";
+  ctx.font=size+"px monospace";
+  drops.forEach((y,i)=>{
+    const t=chars[Math.floor(Math.random()*chars.length)];
+    ctx.fillText(t,i*size,y*size);
+    if(y*size>canvas.height&&Math.random()>0.975)drops[i]=0;
+    drops[i]++;
+  });
+},33);
+</script>
 
 </body>
 </html>
