@@ -15,6 +15,15 @@
     --text-muted: #9ca3af;
     --accent: #3b82f6;
 }
+.game-card img {
+    background: linear-gradient(135deg, #1f2937, #0b1220);
+}
+
+.game-card img:not([src]),
+.game-card img[src=""],
+.game-card img[onerror] {
+    display: none;
+}
 
 /* GLOBAL */
 body {
@@ -72,6 +81,22 @@ p {
 }
 
 /* GAME CARDS */
+.game-card {
+    position: relative;
+}
+
+.fav-btn {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.game-card:hover .fav-btn {
+    opacity: 1;
+}
+
 .game-card {
     background: var(--bg-panel);
     border-radius: 14px;
@@ -166,23 +191,44 @@ footer {
     font-size: 12px;
     color: var(--text-muted);
 }
+/* Heading */
+.header {
+    max-width: 1400px;
+    margin: 32px auto 10px;
+    padding: 0 32px;
+}
 
+.controls {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+/* thing */
+#particles-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(circle at top, #0b0f14, #000000 70%);
+}
 </style>
 
 
 </head>
 
 <body>
-
-<h1>Bloxloxbam Hub</h1>
-<p>100 HTML Games</p>
-
-<input id="searchBar" placeholder="🔍 Search games...">
-<button id="favoritesToggle" onclick="playClick()">⭐ Show Favorites</button>
+<canvas id="particles-bg"></canvas>
+<div class="header">
+  <h1>Bloxloxbam Hub</h1>
+  <p>100 HTML Games</p>
+  <div class="controls">
+    <input id="searchBar" ...>
+    <button id="favoritesToggle">⭐ Show Favorites</button>
+  </div>
+</div>
 
 <div class="games" id="games"></div>
 
-<footer>© 2026 bloxloxbam (hi)</footer>
 
 <!-- MODAL -->
 <div id="gameModal">
@@ -190,13 +236,9 @@ footer {
     <button id="fullscreenGame" onclick="playClick()">⛶</button>
     <iframe id="gameFrame"></iframe>
 </div>
-<!--404-->
-<div class="box">
-    <h1>😌 Don’t worry</h1>
-    <p>If the game doesn’t load, it may be blocked.</p>
-</div>
+<!--audio-->
 <audio id="clickSound" src="audios/computer-mouse-click-352734.mp3" preload="auto"></audio>
-<!--END 404-->
+<!--END AUDIo-->
 <script>
 /* SOUND */
 function playClick() {
@@ -499,6 +541,133 @@ closeBtn.onclick = () => {
 };
 
 </script>
+<!-- ------------------------------------------------   -->
+ <!-- ------------------------------------------------   -->
+<!-- ------------------------------------------------   -->
+<!-- ------------------------------------------------   -->
+<!-- ------------------------------------------------   -->
+<!-- ------------------------------------------------   -->
+<!-- ------------------------------------------------   -->
+<!-- ------------------------------------------------   -->
+<!-- ------------------------------------------------   -->
+
+<script>
+    const canvas = document.getElementById("particles-bg");
+const ctx = canvas.getContext("2d");
+
+let particles = [];
+const PARTICLE_COUNT = 80;
+const MAX_DIST = 110;
+const MOUSE_DIST = 140;
+
+const mouse = { x: null, y: null };
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+window.addEventListener("mousemove", e => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+});
+window.addEventListener("mouseleave", () => {
+    mouse.x = null;
+    mouse.y = null;
+});
+
+class Particle {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.35;
+        this.vy = (Math.random() - 0.5) * 0.35;
+        this.r = 1.3;
+    }
+
+    move() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+    }
+
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255,255,255,0.35)";
+        ctx.fill();
+    }
+}
+
+function connect(a, b, dist) {
+    const opacity = 1 - dist / MAX_DIST;
+    ctx.strokeStyle = `rgba(255,255,255,${opacity * 0.15})`;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+    ctx.stroke();
+}
+
+function init() {
+    particles = [];
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+        particles.push(new Particle());
+    }
+}
+init();
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(p => {
+        p.move();
+        p.draw();
+    });
+
+    for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < MAX_DIST) {
+                connect(particles[i], particles[j], dist);
+            }
+        }
+
+        if (mouse.x !== null) {
+            const dx = particles[i].x - mouse.x;
+            const dy = particles[i].y - mouse.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < MOUSE_DIST) {
+                ctx.strokeStyle = "rgba(255,255,255,0.12)";
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(mouse.x, mouse.y);
+                ctx.stroke();
+            }
+        }
+    }
+
+    requestAnimationFrame(animate);
+}
+animate();
+
+</script>
+<!-- ------------------------------------------------   -->
+<!-- ------------------------------------------------   -->
+<!-- ------------------------------------------------   -->
+<!-- ------------------------------------------------   -->
+<!-- ------------------------------------------------   -->
+<!-- ------------------------------------------------   -->
+<!-- ------------------------------------------------   -->
+<!-- ------------------------------------------------   -->
 
 </body>
 </html>
