@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Game Suggestions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:'Share Tech Mono',monospace;
+  background:black;
+  color:#00ff00;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.box{
+  width:90%;
+  max-width:500px;
+  padding:25px;
+  border:1px solid #00ff00;
+  border-radius:16px;
+  box-shadow:0 0 25px #00ff0066;
+  background:rgba(0,20,0,.85);
+  text-align:center;
+}
+
+input{
+  width:90%;
+  padding:10px;
+  margin:8px 0;
+  background:black;
+  border:1px solid #00ff00;
+  color:#00ff00;
+  border-radius:10px;
+}
+
+button{
+  margin-top:10px;
+  padding:10px 20px;
+  border-radius:20px;
+  border:1px solid #00ff00;
+  background:transparent;
+  color:#00ff00;
+  cursor:pointer;
+  box-shadow:0 0 12px #00ff0066;
+}
+button:hover{background:#00ff0022}
+
+#status{
+  margin-top:10px;
+  font-size:.85rem;
+}
+</style>
+</head>
+<body>
+
+<div class="box">
+  <h2>🎮 Game Suggestions</h2>
+  <p>Suggest a game to be added</p>
+
+  <input id="gameName" placeholder="Game name">
+  <input id="gameLink" placeholder="Game link or the code (optional)">
+  <button onclick="submitSuggestion()">Submit</button>
+
+  <p id="status"></p>
+</div>
+
+<script>
+const DISCORD_WEBHOOK = "PASTE_YOUR_WEBHOOK_URL_HERE";
+
+function submitSuggestion(){
+  const name = gameName.value.trim();
+  const link = gameLink.value.trim();
+  const status = document.getElementById("status");
+
+  if(!name){
+    status.textContent = "❌ Enter a game name";
+    return;
+  }
+
+  const payload = {
+    embeds: [{
+      title: "🎮 New Game Suggestion",
+      color: 0x00ff00,
+      fields: [
+        { name: "Game", value: name },
+        { name: "Link", value: link || "Not provided" }
+      ],
+      timestamp: new Date().toISOString()
+    }]
+  };
+
+  fetch(DISCORD_WEBHOOK,{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify(payload)
+  })
+  .then(()=>{
+    status.textContent = "✅ Suggestion sent!";
+    gameName.value = "";
+    gameLink.value = "";
+  })
+  .catch(()=>{
+    status.textContent = "❌ Failed to send";
+  });
+}
+</script>
+
+</body>
+</html>
