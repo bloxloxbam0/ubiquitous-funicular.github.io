@@ -5,122 +5,129 @@
 <title>math </title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap');
 
 :root {
-    --bg-main: #0b0f14;
-    --bg-panel: rgba(20, 26, 36, 0.75);
-    --border: rgba(255,255,255,0.08);
-    --text-main: #e5e7eb;
-    --text-muted: #9ca3af;
-    --accent: #3b82f6;
-}
-.game-card img {
-    background: linear-gradient(135deg, #1f2937, #0b1220);
+    --bg-main: #05070b;
+    --bg-panel: rgba(10, 12, 18, 0.85);
+    --border: rgba(255,255,255,0.06);
+
+    --text-main: #f1f5f9;
+    --text-muted: #9aa4b2;
+
+    --accent: #4f8cff;
+    --accent-glow: rgba(79,140,255,0.35);
 }
 
-.game-card img:not([src]),
-.game-card img[src=""],
-.game-card img[onerror] {
-    display: none;
-}
-
-/* GLOBAL */
+/* ================= GLOBAL ================= */
 body {
     margin: 0;
     font-family: 'Inter', system-ui, sans-serif;
-    background: radial-gradient(circle at top, #111827, #020409 70%);
+    background:
+        radial-gradient(circle at top, rgba(80,120,255,0.08), transparent 40%),
+        radial-gradient(circle at bottom, #020409, #000000 70%);
     color: var(--text-main);
 }
 
-/* HEADERS */
+/* ================= TEXT ================= */
 h1 {
     font-weight: 600;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.6px;
 }
 
 p {
     color: var(--text-muted);
 }
 
-/* SEARCH */
-#searchBar {
-    width: 320px;
-    padding: 12px 16px;
-    border-radius: 10px;
+/* ================= INPUTS / BUTTONS ================= */
+#searchBar,
+#favoritesToggle,
+#closeGame,
+#fullscreenGame {
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.45)),
+        var(--bg-panel);
     border: 1px solid var(--border);
-    background: var(--bg-panel);
+    border-radius: 12px;
+    padding: 12px 16px;
     color: var(--text-main);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        0 6px 24px rgba(0,0,0,0.75);
     outline: none;
 }
 
-/* FAVORITES */
 #favoritesToggle {
-    margin: 12px;
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 16px;
-    color: var(--text-main);
     cursor: pointer;
 }
 
 #favoritesToggle.active {
-    border-color: var(--accent);
     color: var(--accent);
+    box-shadow:
+        0 0 0 1px var(--accent),
+        0 0 20px var(--accent-glow);
 }
 
-/* GRID */
+/* ================= LAYOUT ================= */
+.header {
+    max-width: 1400px;
+    margin: 32px auto 10px;
+    padding: 0 32px;
+}
+
+.controls {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
 .games {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+    gap: 22px;
     padding: 32px;
     max-width: 1400px;
     margin: auto;
 }
 
-/* GAME CARDS */
+/* ================= GAME CARD ================= */
 .game-card {
     position: relative;
-}
-
-.fav-btn {
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    font-size: 14px;
-    opacity: 0.7;
-}
-
-.game-card:hover .fav-btn {
-    opacity: 1;
-}
-
-.game-card {
-    background: var(--bg-panel);
-    border-radius: 14px;
-    border: 1px solid var(--border);
     padding: 0;
-    color: var(--text-main);
     cursor: pointer;
-    transition: transform .2s ease, box-shadow .2s ease;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.5)),
+        var(--bg-panel);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.06),
+        0 12px 40px rgba(0,0,0,0.85);
+    transition: transform .25s ease, box-shadow .25s ease;
 }
 
 .game-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    transform: translateY(-6px) scale(1.015);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.1),
+        0 24px 70px rgba(0,0,0,0.95),
+        0 0 0 1px var(--accent-glow);
 }
 
-/* IMAGE */
+/* ================= IMAGE ================= */
 .game-card img {
     width: 100%;
     height: 130px;
     object-fit: cover;
     border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, #111827, #020409);
 }
 
-/* INFO */
+/* ================= INFO ================= */
 .game-info {
     padding: 14px;
 }
@@ -136,18 +143,23 @@ p {
     font-size: 13px;
 }
 
-/* FAVORITE STAR */
+/* ================= FAVORITE STAR ================= */
 .fav-btn {
     cursor: pointer;
     color: var(--accent);
+    opacity: 0.8;
 }
 
-/* MODAL */
+.game-card:hover .fav-btn {
+    opacity: 1;
+}
+
+/* ================= MODAL ================= */
 #gameModal {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(10px);
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(12px);
     display: none;
     z-index: 9999;
 }
@@ -156,61 +168,66 @@ p {
     width: 92%;
     height: 88%;
     margin-top: 48px;
-    border-radius: 12px;
+    border-radius: 14px;
     border: 1px solid var(--border);
     background: black;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.9);
 }
 
-/* MODAL BUTTONS */
-#closeGame,
-#fullscreenGame {
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
-    color: var(--text-main);
-    padding: 8px 12px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 8px;
-}
-
-#closeGame {
-    position: absolute;
-    top: 14px;
-    right: 16px;
-}
-
-#fullscreenGame {
-    position: absolute;
-    top: 14px;
-    right: 64px;
-}
-
-/* FOOTER */
-footer {
-    margin: 30px;
-    font-size: 12px;
-    color: var(--text-muted);
-}
-/* Heading */
-.header {
-    max-width: 1400px;
-    margin: 32px auto 10px;
-    padding: 0 32px;
-}
-
-.controls {
-    display: flex;
-    gap: 12px;
-    margin-top: 16px;
-}
-/* thing */
+/* ================= PARTICLES BACKGROUND ================= */
 #particles-bg {
     position: fixed;
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background: radial-gradient(circle at top, #0b0f14, #000000 70%);
+    background: radial-gradient(circle at top, #06080d, #000000 70%);
 }
+
+/* ================= FOOTER ================= */
+footer {
+    margin: 30px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+/* FORCE TEXT VISIBILITY */
+.game-card,
+.game-info,
+.game-info h3,
+.game-info p,
+.header h1,
+.header p,
+button,
+input {
+    color: #f8fafc !important;
+}
+
+/* STRONGER TEXT CONTRAST */
+.game-info h3 {
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+
+.game-info p {
+    color: #cbd5e1 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+}
+
+/* FIX BUTTON TEXT */
+#favoritesToggle,
+#closeGame,
+#fullscreenGame {
+    color: #f1f5f9 !important;
+}
+
+/* INPUT TEXT FIX */
+#searchBar {
+    color: #f8fafc !important;
+}
+
+#searchBar::placeholder {
+    color: #94a3b8;
+}
+
 </style>
 
 
@@ -223,7 +240,7 @@ footer {
   <p>100 HTML Games</p>
   <div class="controls">
     <input id="searchBar" ...>
-    <button id="favoritesToggle">⭐ Show Favorites</button>
+    <button id="favoritesToggle">Show Favorites</button>
   </div>
 </div>
 
@@ -420,6 +437,25 @@ games[24] = {
     image: "https://uploads.onecompiler.io/447ehvbeh/44amgd7np/Screenshot%202026-01-14%20190542.png",
     page: "games/BridgeRace.html"
 };
+games[25] = {
+    title: "Bike Obby",
+    description: "Navigate challenging obstacle courses on your bike and try not to fall!",
+    image: "https://tutorjet.cfd/misc/bikeobby/img.webp",
+    page: "games/BikeObby.html"
+};
+games[26] = {
+    title: "2048",
+    description: "Slide the tiles to combine numbers and reach 2048!",
+    image: "https://tutorjet.cfd/misc/2048/2048.webp",
+    page: "games/2048.html"
+};
+games[27] = {
+    title: "Capybara Clicker",
+    description: "Click capybaras and grow your cute collection!",
+    image: "https://tutorjet.cfd/img/games/capybaraclicker.webp",
+    page: "games/CapybaraClicker.html"
+};
+
 games[100] = {
     title: "notdone",
     description: "A fun game where you can live a virtual life",
